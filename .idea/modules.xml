@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/WhineAndDine.iml" filepath="$PROJECT_DIR$/WhineAndDine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/whine-and-dine.iml" filepath="$PROJECT_DIR$/whine-and-dine.iml" />
+    </modules>
+  </component>
+</project>
+
