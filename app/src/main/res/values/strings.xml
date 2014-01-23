@@ -6,5 +6,14 @@
     <string name="title_timing">Timing</string>
     <string name="title_history">History</string>
     <string name="action_about">About</string>
+    <string name="radio_left">Left</string>
+    <string name="radio_right">Right</string>
+    <string name="timer_main">00:00</string>
+    <string name="button_done">Done</string>
+    <string name="timer_ms">000</string>
+
+    <string name="toggle_pause">Pause</string>
+    <string name="toggle_left">Left</string>
+    <string name="toggle_right">Right</string>
 
 </resources>
