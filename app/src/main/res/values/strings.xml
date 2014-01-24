@@ -12,7 +12,7 @@
     <string name="button_done">Done</string>
     <string name="timer_ms">000</string>
 
-    <string name="toggle_pause">Pause</string>
+    <string name="toggle_pause">||</string>
     <string name="toggle_left">Left</string>
     <string name="toggle_right">Right</string>
 

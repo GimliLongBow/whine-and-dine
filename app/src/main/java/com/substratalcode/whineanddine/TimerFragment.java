@@ -1,9 +1,9 @@
 package com.substratalcode.whineanddine;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-import android.os.Handler;
 
 public class TimerFragment extends Fragment {
 
@@ -23,7 +22,7 @@ public class TimerFragment extends Fragment {
     /**
      * The timer for the main tab view.
      */
-    private Handler customHandler;
+    private Handler timeHandler;
 
     /**
      * The private variables to hold references to the view elements.
@@ -37,11 +36,23 @@ public class TimerFragment extends Fragment {
     /**
      * Timer variables to hold values.
      */
-    private long startTime = 0L;
-    long timeInMilliseconds = 0L;
-    long timeSwapBuff = 0L;
-    long updatedTime = 0L;
-    boolean running = false;
+    private long leftTime = 0L; // Amount of time in this session spent on left.
+    private long rightTime = 0L; // Amount of time in this session spent on right.
+    private long startTimeMs = 0L; // Time which the button was clicked at.
+    private long currentRunningTime  = 0L; // The amount of time since the left or right button was clicked.
+    private boolean timerRunning = false;
+    private int currentSide = 0; // Flag to determine if the feeding is on the left side or not.
+
+    /**
+     * Feeding variable to keep the current feeding around.
+     */
+    private Feeding currentFeeding;
+
+    /**
+     * Click listeners.
+     */
+    private OnClickListener toggleButtonsListener;
+    private OnClickListener doneButtonListener;
 
     public static TimerFragment newInstance() {
         TimerFragment fragment = new TimerFragment();
@@ -52,7 +63,32 @@ public class TimerFragment extends Fragment {
     }
 
     public TimerFragment() {
-        customHandler = new Handler();
+        timeHandler = new Handler();
+        currentFeeding = null;
+
+        // Click listeners.
+        toggleButtonsListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTimer(v);
+            }
+        };
+        doneButtonListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Save the data!
+                saveTimes();
+                // Reset everything else.
+                timerRunning = false;
+                currentSide = 0;
+                leftTime = rightTime = startTimeMs = 0L;
+                timeHandler.removeCallbacks(updateTimerThread);
+                timerMain.setText("00:00");
+                timerMs.setText("000");
+            }
+        };
+
+        // Timer thread startup.
     }
 
     @Override
@@ -73,55 +109,60 @@ public class TimerFragment extends Fragment {
         return rootView;
     }
 
-    public void startTimer(View view) {
-        if(!running) {
-            // If it isn't running, fire it up.
-            startTime = SystemClock.uptimeMillis();
-            customHandler.postDelayed(updateTimerThread, 0);
-            // Change the text on the Start button.
-            running = true;
+    private void startTimer(View view) {
+        if(!timerRunning) {
+            if(currentFeeding == null) currentFeeding = new Feeding();
 
-            Log.v(TAG, "Starting.");
+            // Fire up the timer.
+            timerRunning = true;
+            startTimeMs = SystemClock.uptimeMillis();
+            timeHandler.postDelayed(updateTimerThread, 0);
         } else {
-            // Just pause it.
-            timeSwapBuff += timeInMilliseconds;
-            customHandler.removeCallbacks(updateTimerThread);
-            running = false;
+            // Store the current running time into either left or right:
+            if(currentSide == leftBtn.getId()) leftTime += currentRunningTime;
+            else if(currentSide == rightBtn.getId()) rightTime += currentRunningTime;
 
-            Log.v(TAG, "Pausing");
+            if(currentSide == view.getId()) {
+                // Just pause it.
+                timeHandler.removeCallbacks(updateTimerThread);
+                timerRunning = false;
+            } else {
+                startTimeMs = SystemClock.uptimeMillis();
+            }
         }
+        // The current side is the one that was just clicked.
+        currentSide = view.getId();
+
+        if(view.getId() == leftBtn.getId() && rightBtn.isChecked()) rightBtn.toggle();
+        else if (view.getId() == rightBtn.getId() && leftBtn.isChecked()) leftBtn.toggle();
     }
 
+    private void saveTimes() {
+        currentFeeding.leftTime = leftTime;
+        currentFeeding.rightTime = rightTime;
+    }
+
+    /**
+     * Thread to run the timer.
+     */
     private Runnable updateTimerThread = new Runnable() {
 
         public void run() {
 
-            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
+            currentRunningTime = SystemClock.uptimeMillis() - startTimeMs;
 
-            updatedTime = timeSwapBuff + timeInMilliseconds;
+            long timeToDisplay = currentRunningTime + leftTime + rightTime;
 
-            int secs = (int) (updatedTime / 1000);
+            int secs = (int) (timeToDisplay / 1000);
             int mins = secs / 60;
             secs = secs % 60;
-            int milliseconds = (int) (updatedTime % 1000);
+            int milliseconds = (int) (timeToDisplay % 1000);
+
+            // Update the UI.
             timerMain.setText("" + String.format("%02d", mins) + ":" + String.format("%02d", secs) );
             timerMs.setText(String.format("%03d", milliseconds));
-            customHandler.postDelayed(this, 0);
+            timeHandler.postDelayed(this, 0);
         }
 
-    };
-
-    OnClickListener toggleButtonsListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            startTimer(v);
-        }
-    };
-
-    OnClickListener doneButtonListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
     };
 }
