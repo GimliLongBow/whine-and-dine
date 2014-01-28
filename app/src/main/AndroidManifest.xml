@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.substratalcode.whineanddine.AboutActivity"
+            android:name=".ui.AboutActivity"
             android:label="@string/about_name"
             android:parentActivityName="com.substratalcode.whineanddine.MainActivity"
             >

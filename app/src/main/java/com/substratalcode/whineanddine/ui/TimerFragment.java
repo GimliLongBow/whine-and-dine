@@ -1,9 +1,10 @@
-package com.substratalcode.whineanddine;
+package com.substratalcode.whineanddine.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,6 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.substratalcode.whineanddine.R;
+import com.substratalcode.whineanddine.db.Feeding;
+import com.substratalcode.whineanddine.db.FeedingsDataSource;
+
+import java.sql.SQLException;
 
 public class TimerFragment extends Fragment {
 
@@ -46,13 +53,18 @@ public class TimerFragment extends Fragment {
     /**
      * Feeding variable to keep the current feeding around.
      */
-    private Feeding currentFeeding;
+    private Feeding currentFeeding = null;
 
     /**
      * Click listeners.
      */
     private OnClickListener toggleButtonsListener;
     private OnClickListener doneButtonListener;
+
+    /**
+     * Datasource!
+     */
+    FeedingsDataSource datasource;
 
     public static TimerFragment newInstance() {
         TimerFragment fragment = new TimerFragment();
@@ -95,8 +107,8 @@ public class TimerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_timer, container, false);
 
-        timerMain = (TextView) rootView.findViewById(R.id.timerMain);
-        timerMs = (TextView) rootView.findViewById(R.id.timerMs);
+        timerMain = (TextView) rootView.findViewById(R.id.timer_main);
+        timerMs = (TextView) rootView.findViewById(R.id.timer_ms);
         leftBtn = (ToggleButton) rootView.findViewById(R.id.toggle_left);
         rightBtn = (ToggleButton) rootView.findViewById(R.id.toggle_right);
         doneBtn = (Button) rootView.findViewById(R.id.button_done);
@@ -105,6 +117,8 @@ public class TimerFragment extends Fragment {
         leftBtn.setOnClickListener(toggleButtonsListener);
         rightBtn.setOnClickListener(toggleButtonsListener);
         doneBtn.setOnClickListener(doneButtonListener);
+
+        datasource = new FeedingsDataSource(getActivity());
 
         return rootView;
     }
@@ -138,8 +152,19 @@ public class TimerFragment extends Fragment {
     }
 
     private void saveTimes() {
-        currentFeeding.leftTime = leftTime;
-        currentFeeding.rightTime = rightTime;
+        currentFeeding.leftTime = leftTime/1000; // Convert from MS to Seconds.
+        currentFeeding.rightTime = rightTime/1000;
+
+        try{
+            datasource.open();
+            datasource.saveFeeding(currentFeeding);
+            datasource.close();
+            Log.w(TAG, "Finished saveTimes.");
+        } catch (SQLException ex) {
+            datasource.close();
+        }
+        currentFeeding = null;
+
     }
 
     /**

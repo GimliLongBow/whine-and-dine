@@ -12,6 +12,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.substratalcode.whineanddine.ui.AboutActivity;
+import com.substratalcode.whineanddine.ui.HistoryFragment;
+import com.substratalcode.whineanddine.ui.TimerFragment;
+
 import java.util.Locale;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
@@ -31,10 +35,17 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
      */
     ViewPager mViewPager;
 
+    TimerFragment timerFrag;
+    HistoryFragment historyFrag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Create the fragments.
+        timerFrag = TimerFragment.newInstance();
+        historyFrag = HistoryFragment.newInstance();
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -90,6 +101,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         if (id == R.id.action_about) {
             Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
+        } else if (id == R.id.action_load) {
+            historyFrag.loadData();
         }
 
         return true;
@@ -128,11 +141,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             switch (position) {
                 case 0:
                     // Display the timer fragment.
-                    frag = TimerFragment.newInstance();
+                    frag = timerFrag;
                     break;
                 case 1:
                     // Display the history fragment.
-                    frag = HistoryFragment.newInstance();
+                    frag = historyFrag;
                     break;
             }
 

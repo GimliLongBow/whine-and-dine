@@ -1,4 +1,4 @@
-package com.substratalcode.whineanddine;
+package com.substratalcode.whineanddine.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.view.MenuItem;
 import android.support.v7.app.ActionBar;
+
+import com.substratalcode.whineanddine.R;
 
 public class AboutActivity extends Activity {
 

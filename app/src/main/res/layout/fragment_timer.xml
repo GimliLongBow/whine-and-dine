@@ -4,7 +4,7 @@
     android:layout_height="fill_parent" >
 
     <TextView
-        android:id="@+id/timerMain"
+        android:id="@+id/timer_main"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -14,19 +14,19 @@
         android:textSize="100sp" />
 
     <TextView
-        android:id="@+id/timerMs"
+        android:id="@+id/timer_ms"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/timerMain"
+        android:layout_below="@id/timer_main"
         android:layout_marginBottom="50dp"
-        android:textSize="40sp"
+        android:textSize="90sp"
         android:gravity="center"
         android:text="@string/timer_ms" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/timerMs"
+        android:layout_below="@id/timer_ms"
         android:gravity="center">
 
         <ToggleButton
