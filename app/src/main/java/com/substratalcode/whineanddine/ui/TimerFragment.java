@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -38,7 +39,7 @@ public class TimerFragment extends Fragment {
     TextView timerMs;
     ToggleButton leftBtn;
     ToggleButton rightBtn;
-    Button doneBtn;
+    ImageButton doneBtn;
 
     /**
      * Timer variables to hold values.
@@ -111,7 +112,7 @@ public class TimerFragment extends Fragment {
         timerMs = (TextView) rootView.findViewById(R.id.timer_ms);
         leftBtn = (ToggleButton) rootView.findViewById(R.id.toggle_left);
         rightBtn = (ToggleButton) rootView.findViewById(R.id.toggle_right);
-        doneBtn = (Button) rootView.findViewById(R.id.button_done);
+        doneBtn = (ImageButton) rootView.findViewById(R.id.button_done);
 
         // Click listeners!
         leftBtn.setOnClickListener(toggleButtonsListener);

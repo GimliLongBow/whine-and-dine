@@ -21,5 +21,6 @@
     <color name="holo_gray_light">#33999999</color>
     <color name="transparent">#00000000</color>
     <color name="holo_blue_light">#ff33b5e5</color>
-
+    <color name="whine_orange">#ff7b2f</color>
+    <color name="whine_gray">#4c4c4c</color>
 </resources>

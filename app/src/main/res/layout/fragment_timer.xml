@@ -8,18 +8,19 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="15sp"
         android:singleLine="true"
         android:text="@string/timer_main"
         android:gravity="center"
-        android:textSize="100sp" />
+        android:textSize="90sp" />
 
     <TextView
         android:id="@+id/timer_ms"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/timer_main"
-        android:layout_marginBottom="50dp"
-        android:textSize="90sp"
+        android:layout_marginBottom="30dp"
+        android:textSize="70sp"
         android:gravity="center"
         android:text="@string/timer_ms" />
 
@@ -35,10 +36,12 @@
             android:layout_height="wrap_content"
             android:textOn="@string/toggle_pause"
             android:textOff="@string/toggle_left"
-            android:textSize="15pt"
-            android:padding="10pt"
-            android:width="70pt"
-            android:layout_marginRight="10pt"
+            android:textSize="20pt"
+            android:padding="5pt"
+            android:width="40pt"
+            android:layout_marginRight="25pt"
+            android:background="@drawable/toggle_background"
+            android:textColor="@color/whine_orange"
             />
 
         <ToggleButton
@@ -47,20 +50,44 @@
             android:layout_height="wrap_content"
             android:textOn="@string/toggle_pause"
             android:textOff="@string/toggle_right"
-            android:textSize="15pt"
-            android:padding="10pt"
-            android:width="70pt"/>
+            android:textSize="20pt"
+            android:padding="5pt"
+            android:width="40pt"
+            android:background="@drawable/toggle_background"
+            android:textColor="@color/whine_orange"/>
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/button_done"
-        android:background="@drawable/selector_transparent_button"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:textSize="15pt"
-        android:padding="5pt"
-        android:text="@string/button_done" />
+        android:background="@color/whine_gray">
+
+        <ImageButton
+            android:id="@+id/button_reset"
+            android:background="@drawable/selector_transparent_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5sp"
+            android:textSize="15pt"
+            android:padding="5pt"
+            android:src="@drawable/ic_undo"
+            android:contentDescription="@string/btn_reset" />
+
+        <ImageButton
+            android:id="@+id/button_done"
+            android:background="@drawable/selector_transparent_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:layout_margin="5sp"
+            android:padding="5pt"
+            android:src="@drawable/ic_accept"
+            android:contentDescription="@string/btn_save"
+            android:clickable="false" />
+
+        </LinearLayout>
 
 </RelativeLayout>
